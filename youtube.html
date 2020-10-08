@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="themes/youtube.min.css" />
+    <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    
+</head>
+
+<body>
+
+       <a href="home.html">Home</a> ||
+       <a href="youtube.html">Youtube</a>
+
+
+
+     <section> 
+ 
+       <h1>Videos de Youtube</h1>
+
+        <div id="content">
+          <div class="row">
+
+              <form id="channel-form">
+                <div class="input-field col s6">
+                  <input type="text" placeholder="Buscar canal de youtube" id="channel-input">
+                  <input type="submit" value="Aceptar" class="btn grey">
+              </form>
+            </div>
+      </div>
+     </section>
+
+<div id="contenedor">
+    <table border=1 id="tabla">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripcion del ultimo video</th>
+                    <th>Vistas</th>
+                    <th>Direccion</th>
+                    <th>Fecha y hora</th>
+
+                </tr>
+            </thead>
+                <tbody>
+                </tbody>
+    </table>    
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script>
+            var nextPageToken = "";
+            // Resultados por pagina
+            var resPorPagina = 5;
+            // Paginas a mostrar
+            var paginas = 1;
+            var key = "AIzaSyAoQH23oSCJQReeZbGWCH8f2eMyD1QkMwM";
+            var idCanal = "UC1mpZNen1RPQvXxV4zIS0Bg";
+            var url = "https://www.googleapis.com/youtube/v3/search?key=" + key + "&channelId=" + idCanal + "&part=snippet,id&order=date&maxResults=" + resPorPagina;
+            $("#contenedor").append(url);
+            $.getJSON(url, function (data) {
+
+                for (var k in data.items) {
+                    var tituloVideo=data.items[k]["snippet"].title;
+                    var description=data.items[k]["snippet"].description;
+                    var visualizations=data.items[k]["snippet"].views;
+                    var urlVideo="https://www.youtube.com/watch?v=" + data.items[k]["id"].videoId;
+                    var fechaVideo=data.items[k]["snippet"].publishedAt;
+                    
+                    console.log(k, data.items[k]["id"].videoId);
+                    //$('#tabla tr:last').after('<tr>'+tituloVideo+'</tr><tr>'+urlVideo+'</tr><tr>'+fechaVideo+'</tr>');
+                    $("table tbody").append('<tr><td>'+tituloVideo+'</td><td>'+description+'</td><td>'+visualizations+'</td><td>'+urlVideo+'</td><td>'+fechaVideo+'</td></tr>');
+            }
+
+        });
+    </script>
+</body>
+
+</html>
